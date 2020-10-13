@@ -12,7 +12,7 @@ def encode_onehot(labels):
     return labels_onehot
 
 
-def load_data(path="../data/cora/", dataset="cora"):
+def load_data(path="../data/cora/", dataset="cora", noramlize_features=True):
     """Load citation network dataset (cora only for now)"""
     print('Loading {} dataset...'.format(dataset))
 
@@ -35,7 +35,8 @@ def load_data(path="../data/cora/", dataset="cora"):
     # build symmetric adjacency matrix
     adj = adj + adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
 
-    features = normalize(features)
+    if noramlize_features:
+        features = normalize(features)
     adj = normalize(adj + sp.eye(adj.shape[0]))
 
     idx_train = range(140)

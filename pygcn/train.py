@@ -29,6 +29,10 @@ parser.add_argument('--hidden', type=int, default=16,
                     help='Number of hidden units.')
 parser.add_argument('--dropout', type=float, default=0.5,
                     help='Dropout rate (1 - keep probability).')
+parser.add_argument('--dataset', type=str, default="cora",
+                    help='Dataset (cora...)')
+parser.add_argument('--noramlize_features', type=bool, default=True,
+                    help='normalize features')
 
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
@@ -39,7 +43,7 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 # Load data
-adj, features, labels, idx_train, idx_val, idx_test = load_data()
+adj, features, labels, idx_train, idx_val, idx_test = load_data("../data/%s/" % args.dataset, args.dataset, args.noramlize_features)
 
 # Model and optimizer
 model = GCN(nfeat=features.shape[1],
